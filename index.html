@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Мама и дочка в Китае</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Manrope:wght@400;600;700&display=swap">
+<style>
+/* Layout: одна колонка-«маршрутный лист»: вводная → бюджет → дни как остановки на линии → план Б → памятка */
+:root{
+  --bg:#F5F8F8; --surface:#FFFFFF; --ink:#12302F; --muted:#557170; --line:#D5E2E1;
+  --sea:#0F7F7A; --sea-soft:#DDF0EE; --coral:#E0583F; --coral-soft:#FCE6E0; --warn:#9A5B00; --warn-soft:#FFF1D6;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif; --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D1919; --surface:#142423; --ink:#E5F1F0; --muted:#94B1AF; --line:#24403E;
+  --sea:#4CC3BA; --sea-soft:#163634; --coral:#FF8B73; --coral-soft:#3A1F19; --warn:#F2B356; --warn-soft:#332611; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D1919; --surface:#142423; --ink:#E5F1F0; --muted:#94B1AF; --line:#24403E;
+  --sea:#4CC3BA; --sea-soft:#163634; --coral:#FF8B73; --coral-soft:#3A1F19; --warn:#F2B356; --warn-soft:#332611; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,6vw,46px);line-height:1.1;font-weight:700}
+h2{font-size:clamp(20px,3.6vw,26px);font-weight:700;margin-bottom:14px}
+h3{font-size:17px;font-weight:500}
+p{margin:0}
+a{color:var(--sea);font-weight:600}
+a:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+section{margin-top:44px}
+.hero{display:grid;gap:14px}
+.hero .lead{font-size:18px;color:var(--muted);max-width:62ch}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.chip{background:var(--sea-soft);color:var(--sea);border-radius:999px;padding:5px 12px;font-size:14px;font-weight:700}
+.note{border-radius:14px;padding:16px 18px;background:var(--warn-soft);color:var(--ink);display:grid;gap:6px}
+.note b{color:var(--warn)}
+.route{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:700;font-size:15px}
+.route span.arrow{color:var(--muted)}
+.route .stop{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:6px 10px}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+td.num,th.num{text-align:right;white-space:nowrap}
+tr.total td{font-weight:700;border-bottom:0;background:var(--sea-soft)}
+.days{display:grid;gap:0;position:relative}
+.day{display:grid;grid-template-columns:56px minmax(0,1fr);gap:16px;padding-bottom:28px;position:relative}
+.day::before{content:"";position:absolute;left:27px;top:56px;bottom:0;width:2px;background:var(--line)}
+.day:last-child::before{display:none}
+.dnum{width:56px;height:56px;border-radius:50%;background:var(--sea);color:var(--bg);display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:15px;line-height:1;text-align:center}
+.dnum small{display:block;font-size:9px;font-family:var(--body);letter-spacing:.08em;text-transform:uppercase;opacity:.85}
+.dbody{display:grid;gap:12px;min-width:0}
+.dhead p{color:var(--muted);font-size:15px}
+.acts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.act{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.ph{aspect-ratio:16/9;max-width:100%;position:relative;display:flex;align-items:flex-end;padding:12px;text-decoration:none;color:#fff}
+.ph .tag{background:rgba(0,0,0,.38);border-radius:8px;padding:4px 9px;font-size:13px;font-weight:700;backdrop-filter:blur(4px)}
+.ph .zh{position:absolute;top:10px;right:12px;font-size:22px;font-weight:700;opacity:.55;color:#fff}
+.act .txt{padding:12px 14px 14px;display:grid;gap:6px;font-size:14.5px}
+.act .txt .meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.sea{background:linear-gradient(160deg,#36C6D3,#0A6E8A)}
+.sunset{background:linear-gradient(160deg,#F7A35C,#C5426B)}
+.green{background:linear-gradient(160deg,#5CB87A,#1E5E4A)}
+.gold{background:linear-gradient(160deg,#E7C467,#A05A2C)}
+.night{background:linear-gradient(160deg,#4C5BC9,#1B2350)}
+.snow{background:linear-gradient(160deg,#A9D3EA,#4F7FA6)}
+.pink{background:linear-gradient(160deg,#F49AB4,#B3477A)}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.plan{border:1px solid var(--line);border-radius:16px;background:var(--surface);padding:18px;display:grid;gap:10px;align-content:start}
+.plan.main{border-color:var(--sea);box-shadow:0 0 0 1px var(--sea)}
+.plan .big{font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.plan ul,.tips ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.badge{display:inline-block;font-size:12px;font-weight:700;border-radius:6px;padding:2px 8px}
+.b-ok{background:var(--sea-soft);color:var(--sea)} .b-no{background:var(--coral-soft);color:var(--coral)}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tip{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;align-content:start;font-size:15px}
+.small{font-size:13px;color:var(--muted)}
+@media (max-width:480px){.day{grid-template-columns:44px minmax(0,1fr);gap:12px}.dnum{width:44px;height:44px;font-size:13px}.day::before{left:21px;top:44px}}
+@media (prefers-reduced-motion:no-preference){.act{transition:transform .15s}.act:hover{transform:translateY(-2px)}}
+</style><style>
+.compare{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.plan .pp{font-size:14px;font-weight:700;color:var(--sea)}
+.planhead{display:grid;gap:6px;margin-bottom:16px}
+.planhead p{color:var(--muted);max-width:62ch}
+.sub{margin-top:26px;margin-bottom:12px;font-size:18px}
+</style>
+<div class="wrap">
+<header class="hero">
+  <div class="eyebrow">Декабрь · 3 взрослых, один номер · вылет из Астаны</div>
+  <h1>Китай в декабре: четыре маршрута на 5 дней</h1>
+  <p class="lead">Каждый маршрут на 5 дней и 4 ночи. Цены на троих взрослых в одном трёхместном номере. Везде есть день в «бане», как в ваших сохранёнках.</p>
+  <div class="facts">
+    <span class="chip">Виза не нужна (РК, до 30 дней)</span>
+    <span class="chip">1 юань ≈ 72 ₸ · 1 $ ≈ 520 ₸</span>
+    <span class="chip">Цены ориентировочные, ноябрь 2026</span>
+  </div>
+</header>
+
+<section>
+  <h2>Сравнение</h2>
+  <div class="compare">
+    <div class="plan">
+      <div class="eyebrow">Г · Только Санья</div>
+      <div class="big">≈ 1,67 млн ₸</div><div class="pp">≈ 555 тыс. на человека</div>
+      <div><span class="badge b-ok">море 4 дня</span> <span class="badge b-ok">баня</span> <span class="badge b-ok">шоу</span></div>
+      <ul><li>Курорт без переездов: Атлантис, остров, аттракционы</li><li>Дешевле с прямым чартером</li></ul>
+      <a href="#plan-d">К плану ↓</a>
+    </div>
+    <div class="plan">
+      <div class="eyebrow">А · Хайнань + Шанхай</div>
+      <div class="big">≈ 1,52 млн ₸</div><div class="pp">≈ 505 тыс. на человека</div>
+      <div><span class="badge b-ok">море +24 °C</span> <span class="badge b-ok">источники</span> <span class="badge b-no">3 перелёта</span></div>
+      <ul><li>Источники с ночёвкой, 1 день моря, 1 день Шанхая</li><li>Много дороги для 5 дней</li></ul>
+      <a href="#plan-a">К плану ↓</a>
+    </div>
+    <div class="plan main">
+      <div class="eyebrow">В · Шанхай + Пекин на поезде</div>
+      <div class="big">≈ 1,46 млн ₸</div><div class="pp">≈ 485 тыс. на человека</div>
+      <div><span class="badge b-ok">поезд 350 км/ч</span> <span class="badge b-ok">баня</span> <span class="badge b-no">холодно</span></div>
+      <ul><li>Вайтань, Великая стена, Запретный город</li><li>Прилёт в Шанхай, вылет из Пекина</li></ul>
+      <a href="#plan-c">К плану ↓</a>
+    </div>
+    <div class="plan">
+      <div class="eyebrow">Б · Урумчи, лыжи</div>
+      <div class="big">≈ 970 тыс. ₸</div><div class="pp">≈ 320 тыс. на человека</div>
+      <div><span class="badge b-ok">3 дня лыж</span> <span class="badge b-ok">баня</span> <span class="badge b-no">−10…−15 °C</span></div>
+      <ul><li>Самый дешёвый и без пересадок</li><li>Курорт Silk Road, Гранд-базар</li></ul>
+      <a href="#plan-b">К плану ↓</a>
+    </div>
+  </div>
+  <div class="note" style="margin-top:16px">
+    <p><b>Про бюджет.</b> Если 500 тыс. ₸ — это на каждого, в него укладываются Урумчи (≈ 320 тыс.) и Шанхай + Пекин (≈ 485 тыс.). Хайнань + Шанхай (≈ 505 тыс.) и только Санья (≈ 555 тыс.) выходят чуть больше: дороже всего перелёт через Урумчи. Чартер @charterticketsme может снизить цены: пришлите скриншот, пересчитаю.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Один номер на троих</h2>
+  <div class="tips">
+    <div class="tip"><h3>Как искать</h3><ul>
+      <li>В Trip.com ставьте «3 взрослых, 1 номер»: покажет только номера, куда пускают троих</li>
+      <li>Ищите Triple Room, Family Room или номер с двумя кроватями + доп. кровать (加床)</li></ul></div>
+    <div class="tip"><h3>Важно в Китае</h3><ul>
+      <li>Отель регистрирует паспорт каждого гостя. Если оформить номер на двоих и прийти втроём, могут не заселить</li>
+      <li>Трёхместный номер обычно на 20–40% дороже двухместного. В расчётах заложено +30%</li></ul></div>
+  </div>
+</section>
+
+<section id="plan-c">
+  <div class="planhead"><div class="eyebrow">Города на поезде</div><h2>В · Шанхай и Пекин</h2>
+  <p>2 ночи в Шанхае, скоростной поезд в Пекин, ночь в отеле и ночь в бане. Улетаете из Пекина прямым рейсом. В Шанхае +5…10 °C, в Пекине −5…+3 °C, нужен пуховик.</p></div>
+  <div class="tbl-wrap"><table>
+<thead><tr><th>Статья (3 взрослых, 1 номер)</th><th>Как считали</th><th class="num">≈ тенге</th></tr></thead>
+<tbody><tr><td>Астана → Шанхай</td><td>с пересадкой, ≈ 110 тыс. × 3</td><td class="num">330 000</td></tr>
+<tr><td>Пекин → Астана</td><td>прямой Air Astana / Air China, ≈ 150 тыс. × 3</td><td class="num">450 000</td></tr>
+<tr><td>Поезд Шанхай → Пекин</td><td>скоростной G, 2-й класс ≈ 650 ¥ × 3</td><td class="num">140 000</td></tr>
+<tr><td>Отель в Шанхае, 2 ночи</td><td>Metropolo у Вайтаня, трёхместный ≈ 72 тыс.</td><td class="num">145 000</td></tr>
+<tr><td>Отель в Пекине, 1 ночь</td><td>East Sacred Hotel, трёхместный</td><td class="num">65 000</td></tr>
+<tr><td>Баня с ночёвкой</td><td>«Цзюхао», ≈ 390 ¥ × 3, буфет включён</td><td class="num">85 000</td></tr>
+<tr><td>Еда</td><td>≈ 300 ¥ в день на троих, ужин в бане включён</td><td class="num">90 000</td></tr>
+<tr><td>Развлечения</td><td>башня, Юйюань, стена с канаткой, Запретный город</td><td class="num">110 000</td></tr>
+<tr><td>Метро, такси</td><td>Didi до стены и бани</td><td class="num">45 000</td></tr>
+<tr class="total"><td>Итого</td><td>≈ 485 тыс. на человека</td><td class="num">≈ 1 460 000</td></tr></tbody></table></div>
+  <h3 class="sub">По дням</h3>
+  <div class="days" id="daysC"></div>
+  <h3 class="sub">Где ночевать</h3>
+  <div class="tips">
+    <div class="tip"><div class="eyebrow">Шанхай, ночи 1–2</div><h3>Jinjiang Metropolo East Nanjing Road, Off Bund</h3><p><b>9,4 / 10</b> · 6 178 отзывов</p><p class="small">Минута до Вайтаня и Нанкин-роуд. Проверьте наличие трёхместного номера.</p><a href="https://ru.trip.com/hotels/shanghai-hotel-detail-1114675/shanghai-jinjiang-metropolo-east-nanjing-road-hoteloff-bund/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+    <div class="tip"><div class="eyebrow">Пекин, ночь 3</div><h3>East Sacred Hotel</h3><p><b>9,5 / 10</b> · 4 720 отзывов</p><p class="small">Рядом Запретный город, Тяньаньмэнь и метро Ванфуцзин.</p><a href="https://www.trip.com/hotels/beijing-hotel-detail-1419816/east-sacred-hotel-very-near-beijing-tiananmen-squarethe-forbidden-citywangfujing-subway-station/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+    <div class="tip"><div class="eyebrow">Пекин, ночь 4</div><h3>Баня «Цзюхао» (九号温泉)</h3><p><b>≈ 380–400 ¥</b> с человека, буфет включён</p><p class="small">Ночёвка в зоне отдыха или капсулах. Условия и цены уточните в Dianping или Meituan.</p></div>
+  </div>
+</section>
+
+<section id="plan-d">
+  <div class="planhead"><div class="eyebrow">Только курорт</div><h2>Г · Санья без Шанхая</h2>
+  <p>Все 5 дней на Хайнане, без перелётов внутри Китая. День в бане с ночёвкой, 2 дня плавания, плюс аквапарк с аквариумом, большое шоу, водные аттракционы и статуя Гуаньинь. Днём +25…27 °C.</p></div>
+  <div class="tbl-wrap"><table>
+<thead><tr><th>Статья (3 взрослых, 1 номер)</th><th>Как считали</th><th class="num">≈ тенге</th></tr></thead>
+<tbody><tr><td>Астана → Санья</td><td>через Урумчи, ≈ 170 тыс. × 3</td><td class="num">510 000</td></tr>
+<tr><td>Санья → Астана</td><td>через Урумчи, ≈ 170 тыс. × 3</td><td class="num">510 000</td></tr>
+<tr><td>Источники, 1 ночь</td><td>Nantian Hot Spring Resort, трёхместный</td><td class="num">40 000</td></tr>
+<tr><td>Отель у моря, 3 ночи</td><td>Sunshine Resort Intime, трёхместный ≈ 55 тыс.</td><td class="num">165 000</td></tr>
+<tr><td>Еда</td><td>≈ 300 ¥ в день на троих, 5 дней</td><td class="num">110 000</td></tr>
+<tr><td>Развлечения</td><td>Атлантис, шоу, Учжичжоу с аттракционом, Наньшань ≈ 1 220 ¥ × 3</td><td class="num">265 000</td></tr>
+<tr><td>Такси</td><td>Didi между бухтами и до аэропорта</td><td class="num">65 000</td></tr>
+<tr class="total"><td>Итого</td><td>≈ 555 тыс. на человека (без шоу и аттракционов ≈ 520)</td><td class="num">≈ 1 665 000</td></tr></tbody></table></div>
+  <p class="small" style="margin-top:8px">Больше всего, ≈ 1 млн ₸, стоят перелёты через Урумчи. Прямой чартер на Хайнань может сделать этот вариант заметно дешевле.</p>
+  <h3 class="sub">По дням</h3>
+  <div class="days" id="daysD"></div>
+  <h3 class="sub">Где ночевать</h3>
+  <div class="tips">
+    <div class="tip"><div class="eyebrow">Ночь 1 · источники</div><h3>Sanya Haitang Bay Nantian Hot Spring Resort</h3><p><b>8,5 / 10</b> · 468 отзывов · от ≈ $43</p><p class="small">Рядом duty free и Атлантис. Уточните, входят ли бассейны в цену номера.</p><a href="https://www.trip.com/hotels/sanya-hotel-detail-346735/haohanpo-international-resort/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+    <div class="tip"><div class="eyebrow">Ночи 2–4 · море</div><h3>Sunshine Resort Intime Sanya</h3><p><b>9,5 / 10</b> · 8 315 отзывов · от ≈ $80</p><p class="small">Курорт в Дадунхае с бассейнами, пляж рядом.</p><a href="https://www.trip.com/hotels/sanya-hotel-detail-346690/sunshine-resort-intime-sanya/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+    <div class="tip"><div class="eyebrow">Ночи 2–4 · запасной</div><h3>voco Sanya Dadonghai by IHG</h3><p><b>9,4 / 10</b> · 2 131 отзыв · от ≈ $87</p><p class="small">Новый отель на склоне с видом на бухту.</p><a href="https://us.trip.com/hotels/sanya-hotel-detail-128154570/san-ya-ban-shan-hai-jing-voco-jiu-dian/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+  </div>
+</section>
+
+<section id="plan-a">
+  <div class="planhead"><div class="eyebrow">Вариант с морем</div><h2>А · Хайнань и Шанхай</h2>
+  <p>Сутки на горячих источниках с ночёвкой, день у моря, потом 2 ночи в Шанхае. За 5 дней получается плотно. Если хочется больше моря, лучше все 5 дней провести на Хайнане без Шанхая.</p></div>
+  <div class="tbl-wrap"><table>
+<thead><tr><th>Статья (3 взрослых, 1 номер)</th><th>Как считали</th><th class="num">≈ тенге</th></tr></thead>
+<tbody><tr><td>Астана → Санья</td><td>через Урумчи, ≈ 170 тыс. × 3</td><td class="num">510 000</td></tr>
+<tr><td>Санья → Шанхай</td><td>внутренний рейс ≈ 3 ч, ≈ 55 тыс. × 3</td><td class="num">165 000</td></tr>
+<tr><td>Шанхай → Астана</td><td>с пересадкой или через Алматы, ≈ 125 тыс. × 3</td><td class="num">375 000</td></tr>
+<tr><td>Источники, 1 ночь</td><td>Nantian Hot Spring Resort, трёхместный</td><td class="num">40 000</td></tr>
+<tr><td>Отель у моря, 1 ночь</td><td>Sunshine Resort Intime, трёхместный</td><td class="num">55 000</td></tr>
+<tr><td>Отель в Шанхае, 2 ночи</td><td>Metropolo у Вайтаня, трёхместный ≈ 72 тыс.</td><td class="num">145 000</td></tr>
+<tr><td>Еда</td><td>≈ 300 ¥ в день на троих, 5 дней</td><td class="num">110 000</td></tr>
+<tr><td>Развлечения</td><td>Шанхайская башня, Юйюань, мелочи на Хайнане</td><td class="num">80 000</td></tr>
+<tr><td>Такси, метро</td><td>Didi на троих = одна машина</td><td class="num">40 000</td></tr>
+<tr class="total"><td>Итого</td><td>≈ 505 тыс. на человека</td><td class="num">≈ 1 520 000</td></tr></tbody></table></div>
+  <h3 class="sub">По дням</h3>
+  <div class="days" id="daysA"></div>
+  <h3 class="sub">Где ночевать</h3>
+  <div class="tips">
+    <div class="tip"><div class="eyebrow">Ночь 1 · источники</div><h3>Sanya Haitang Bay Nantian Hot Spring Resort</h3><p><b>8,5 / 10</b> · 468 отзывов · от ≈ $43</p><p class="small">Уточните, входят ли бассейны в цену номера.</p><a href="https://www.trip.com/hotels/sanya-hotel-detail-346735/haohanpo-international-resort/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+    <div class="tip"><div class="eyebrow">Ночь 2 · море</div><h3>Sunshine Resort Intime Sanya</h3><p><b>9,5 / 10</b> · 8 315 отзывов · от ≈ $80</p><p class="small">Курорт в Дадунхае с бассейнами. Запасной: voco Sanya Dadonghai (9,4).</p><a href="https://www.trip.com/hotels/sanya-hotel-detail-346690/sunshine-resort-intime-sanya/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+    <div class="tip"><div class="eyebrow">Ночи 3–4 · Шанхай</div><h3>Jinjiang Metropolo East Nanjing Road, Off Bund</h3><p><b>9,4 / 10</b> · 6 178 отзывов</p><p class="small">Минута до Вайтаня.</p><a href="https://ru.trip.com/hotels/shanghai-hotel-detail-1114675/shanghai-jinjiang-metropolo-east-nanjing-road-hoteloff-bund/" target="_blank" rel="noopener">Открыть на trip.com ↗</a></div>
+  </div>
+</section>
+
+<section id="plan-b">
+  <div class="planhead"><div class="eyebrow">Горнолыжный</div><h2>Б · Урумчи: 3 дня на лыжах</h2>
+  <p>Три дня на курорте Silk Road в 40–60 минутах от города, вечером после лыж баня. Живёте в городе и ездите на такси. Прямой рейс 2,5 часа. В декабре −10…−15 °C.</p></div>
+  <div class="tbl-wrap"><table>
+<thead><tr><th>Статья (3 взрослых, 1 номер)</th><th>Как считали</th><th class="num">≈ тенге</th></tr></thead>
+<tbody><tr><td>Авиабилеты</td><td>Астана–Урумчи прямой, туда-обратно, ≈ 100 тыс. × 3</td><td class="num">300 000</td></tr>
+<tr><td>Отель 4 ночи</td><td>4★ в центре, трёхместный ≈ 29 тыс./ночь</td><td class="num">115 000</td></tr>
+<tr><td>Ски-пасс + прокат лыж</td><td>≈ 400 ¥ × 3 чел. × 3 дня</td><td class="num">260 000</td></tr>
+<tr><td>Прокат одежды</td><td>≈ 100 ¥ × 3 × 3 дня (не нужно, если есть своя)</td><td class="num">65 000</td></tr>
+<tr><td>Инструктор</td><td>2 часа на троих в первый день</td><td class="num">50 000</td></tr>
+<tr><td>Баня</td><td>≈ 150 ¥ × 3</td><td class="num">32 000</td></tr>
+<tr><td>Еда</td><td>≈ 220 ¥ в день на троих, 5 дней</td><td class="num">80 000</td></tr>
+<tr><td>Такси до курорта и по городу</td><td>≈ 200 ¥ в день на машину</td><td class="num">65 000</td></tr>
+<tr class="total"><td>Итого</td><td>≈ 320 тыс. на человека (своя одежда, без инструктора ≈ 285)</td><td class="num">≈ 967 000</td></tr></tbody></table></div><p class="small" style="margin-top:8px">Цены курорта на сезон 2026/27 я не нашла, это оценка. Проверьте пакеты «ски-пасс + прокат» на Trip.com или Meituan, в будни дешевле.</p>
+  <h3 class="sub">По дням</h3>
+  <div class="days" id="daysB"></div>
+</section>
+
+<section>
+  <h2>Что подготовить</h2>
+  <div class="tips">
+    <div class="tip"><h3>Билеты</h3><ul>
+      <li>Самолёты: Aviasales, Kupi.kz, Trip.com или чартер</li>
+      <li>Поезд: Trip.com или 12306 по паспорту, продажа за 15 дней</li>
+      <li>На пересадку в Урумчи оставляйте 3+ часа</li></ul></div>
+    <div class="tip"><h3>Деньги и связь</h3><ul>
+      <li>Alipay и WeChat Pay, привязать карту заранее</li>
+      <li>eSIM с роумингом: Instagram, WhatsApp и Google в Китае без него не работают</li>
+      <li>Приложения: Amap, Didi, Trip.com, переводчик</li></ul></div>
+    <div class="tip"><h3>С собой</h3><ul>
+      <li>Пекин и Урумчи: пуховик, термобельё, шапка</li>
+      <li>Хайнань: купальники, SPF 50</li>
+      <li>Загранпаспорт со сроком 6+ месяцев</li></ul></div>
+  </div>
+</section>
+
+<p class="small" style="margin-top:40px">Цены приблизительные: агрегаторы, trip.com, сайты о поездах, ноябрь 2026. Сверяйте на свои даты. Фото подгружаются из Википедии (Wikimedia Commons). Нажмите на фото, чтобы открыть больше снимков места.</p>
+</div>
+<script>
+const D = [
+ {d:1, t:"Прилёт и день в «бане»", s:"Из аэропорта на курорт с горячими источниками в Хайтан-Бэй. Весь день в бассейнах, ночуете там же.", acts:[
+  {n:"Горячие источники Наньтянь", zh:"南田温泉", c:"sunset", q:"Nantian hot spring Sanya pools", p:"входят в проживание", txt:"Десятки бассейнов под пальмами: травяные, молочные, с рыбками-пилингом. Халаты и чай на месте."}]},
+ {d:2, t:"Duty free и Атлантис", s:"Всё в той же бухте Хайтан-Бэй: утром шопинг, днём аквапарк и аквариум. Вечером переезд в Дадунхай.", acts:[
+  {n:"CDF Haitang Bay Duty Free", zh:"海棠湾免税城", c:"gold", q:"CDF Haitang Bay duty free mall Sanya", p:"по желанию", txt:"Крупнейший duty free в мире: косметика, кроссовки, сумки."},
+  {n:"Аквапарк Aquaventure", zh:"亚特兰蒂斯水世界", c:"sea", q:"Atlantis Sanya Aquaventure waterpark", p:"≈ 300 ¥ / чел.", txt:"Горки, ленивая река, вода подогрета зимой."},
+  {n:"Аквариум Lost Chambers", zh:"失落的空间", c:"night", q:"Atlantis Sanya Lost Chambers aquarium", p:"≈ 150–200 ¥ / чел.", txt:"Скаты, акулы, медузы в огромном подводном зале."}]},
+ {d:3, t:"День у моря и вечернее шоу", s:"Первый день плавания: пляж и бассейн отеля без спешки. Вечером большое шоу.", acts:[
+  {n:"Пляж Дадунхай", zh:"大东海", c:"sea", q:"Dadonghai beach Sanya", p:"бесплатно", txt:"Тёплая спокойная бухта, вода +24 °C. Массаж на пляже ≈ 100 ¥."},
+  {n:"Шоу «Санья Цяньгуцин»", zh:"三亚千古情", c:"pink", q:"三亚千古情 演出", p:"≈ 300 ¥ / чел.", txt:"Часовое шоу с водой, огнём и полётами над залом. Вокруг парк с фонарями и уличной едой."},
+  {n:"Рынок морепродуктов №1", zh:"第一市场", c:"night", q:"Sanya First Market seafood", p:"≈ 200 ¥ на троих", txt:"Поздний ужин: выбираете морепродукты, рядом готовят за 15–20 ¥/блюдо."}]},
+ {d:4, t:"Остров Учжичжоу и водные развлечения", s:"Второй день плавания: самая прозрачная вода Хайнаня. Выезжать к 8:30.", acts:[
+  {n:"Остров Учжичжоу", zh:"蜈支洲岛", c:"sea", q:"Wuzhizhou Island Sanya", p:"≈ 144 ¥ / чел.", txt:"Белый песок, снорклинг у камней, катер с причала включён."},
+  {n:"Парасейлинг, банан, гидроцикл", zh:"海上项目", c:"sunset", q:"Wuzhizhou island parasailing jet ski", p:"≈ 150–400 ¥ за аттракцион", txt:"Полёт на парашюте над морем — главный аттракцион. Цены торгуются в комплекте."}]},
+ {d:5, t:"Богиня Гуаньинь и домой", s:"Наньшань по дороге в аэропорт. Если рейс утром, перенесите на день 3.", acts:[
+  {n:"Богиня Гуаньинь, 108 м", zh:"南山海上观音", c:"gold", q:"Nanshan Guanyin statue Sanya", p:"≈ 129 ¥ / чел.", txt:"Статуя выше статуи Свободы, стоит прямо в море. Храмы и сады."}]}
+];
+
+const W = {"CDF Haitang Bay Duty Free": "China Duty Free Group", "Silk Road Ski Resort": "Skiing", "Аквапарк Aquaventure": "Atlantis Sanya", "Аквариум Lost Chambers": "Aquarium", "Банный центр": "Hot spring", "Баня «Цзюхао»": "Onsen", "Богиня Гуаньинь, 108 м": "Guanyin of Nanshan", "Вайтань ночью": "The Bund", "Великая стена, Мутяньюй": "Mutianyu", "Горячие источники Наньтянь": "Hot spring", "Гранд-базар Урумчи": "Xinjiang International Grand Bazaar", "Запретный город": "Forbidden City", "Инструктор": "Ski school", "Кокосы на Санья-Бэй": "Sanya", "Музей Синьцзяна": "Xinjiang Uygur Autonomous Region Museum", "Нанкин-роуд": "Nanjing Road", "Ночь при источниках": "Haitang Bay", "Остров Учжичжоу": "Wuzhizhou Island", "Парасейлинг, банан, гидроцикл": "Parasailing", "Парк Хуншань": "Hongshan Park Urumqi", "Площадь Тяньаньмэнь": "Tiananmen Square", "Пляж Дадунхай": "Dadonghai", "Последний день на склоне": "Tian Shan", "Рынок морепродуктов №1": "Seafood", "Сад Юйюань и старый город": "Yu Garden", "Скоростной поезд G": "Fuxing (train)", "Трассы и гондола": "Gondola lift", "Тюбинг": "Snow tubing", "Тяньцзыфан и улица Укан": "Tianzifang", "Уйгурский ужин": "Uyghur cuisine", "Цяньмэнь и утка по-пекински": "Peking duck", "Шанхайская башня": "Shanghai Tower", "Шоу «Санья Цяньгуцин»": "Songcheng"};
+const img = q => "https://www.google.com/search?tbm=isch&q=" + encodeURIComponent(q);
+const A = [
+ {d:1, t:"Прилёт и день в «бане»", s:"Из аэропорта сразу на курорт с горячими источниками в Хайтан-Бэй. Весь день в бассейнах, ночуете там же.", acts:[
+  {n:"Горячие источники Наньтянь", zh:"南田温泉", c:"sunset", q:"Nantian hot spring Sanya pools", p:"входят в проживание", txt:"Десятки бассейнов под пальмами: травяные, молочные, с рыбками-пилингом. Халаты и чай на месте."},
+  {n:"Ночь при источниках", zh:"南田温泉度假酒店", c:"pink", q:"Sanya Haitang Bay Nantian Hot Spring Resort", p:"от ≈ $43 / ночь", txt:"Вечером снова в бассейны. Утром завтрак и последнее купание."}]},
+ {d:2, t:"Duty free и море", s:"Утром шопинг в той же бухте, потом переезд в Дадунхай (≈ 50 мин на такси) и весь день у моря.", acts:[
+  {n:"CDF Haitang Bay Duty Free", zh:"海棠湾免税城", c:"gold", q:"CDF Haitang Bay duty free mall Sanya", p:"по желанию", txt:"Крупнейший duty free в мире: косметика, кроссовки, сумки дешевле, чем в Астане."},
+  {n:"Пляж Дадунхай", zh:"大东海", c:"sea", q:"Dadonghai beach Sanya", p:"бесплатно", txt:"Тёплая спокойная бухта, вода +24 °C."},
+  {n:"Рынок морепродуктов №1", zh:"第一市场", c:"night", q:"Sanya First Market seafood", p:"≈ 200 ¥ на троих", txt:"Выбираете креветок и крабов на рынке, рядом готовят за 15–20 ¥/блюдо."}]},
+ {d:3, t:"Утро у моря, вечер в Шанхае", s:"До обеда купаетесь, днём рейс Санья → Шанхай (≈ 3 ч). Достаньте куртки: в Шанхае +5…10 °C.", acts:[
+  {n:"Кокосы на Санья-Бэй", zh:"三亚湾椰梦长廊", c:"sunset", q:"Sanya Bay coconut dream corridor", p:"≈ 15 ¥", txt:"Последнее купание и свежий кокос под пальмами."},
+  {n:"Вайтань ночью", zh:"外滩", c:"night", q:"Shanghai Bund night skyline Lujiazui", p:"бесплатно", txt:"Набережная с видом на небоскрёбы Луцзяцзуй. Подсветка до 22:00."}]},
+ {d:4, t:"Шанхай за один день", s:"Сады, переулки и вид с высоты 546 м.", acts:[
+  {n:"Сад Юйюань и старый город", zh:"豫园", c:"gold", q:"Yu Garden Shanghai old city", p:"≈ 40 ¥ / чел.", txt:"Классический сад, чайные домики, сяолунбао с бульоном внутри."},
+  {n:"Тяньцзыфан и улица Укан", zh:"田子坊 · 武康路", c:"pink", q:"Tianzifang Wukang Road Shanghai", p:"бесплатно", txt:"Узкие переулки с лавками и кафе, платаны, место для фото."},
+  {n:"Шанхайская башня", zh:"上海中心", c:"night", q:"Shanghai Tower observation deck view", p:"≈ 180 ¥ / чел.", txt:"Смотровая на 118 этаже, лучше идти к закату."}]},
+ {d:5, t:"Домой", s:"Утром Нанкин-роуд за сувенирами, затем рейс в Астану с пересадкой или через Алматы.", acts:[
+  {n:"Нанкин-роуд", zh:"南京路", c:"sunset", q:"Nanjing Road Shanghai pedestrian street", p:"по желанию", txt:"Главная торговая улица: чай, сладости, подарки."}]}
+];
+const C = [
+ {d:1, t:"Прилёт в Шанхай", s:"Астана → Шанхай с пересадкой. Вечером огни набережной.", acts:[
+  {n:"Вайтань ночью", zh:"外滩", c:"night", q:"Shanghai Bund night skyline Lujiazui", p:"бесплатно", txt:"Набережная с видом на небоскрёбы Луцзяцзуй. Подсветка до 22:00."},
+  {n:"Нанкин-роуд", zh:"南京路", c:"sunset", q:"Nanjing Road Shanghai night", p:"по желанию", txt:"Главная пешеходная улица в неоне, рядом с отелем."}]},
+ {d:2, t:"Шанхай за один день", s:"Сады, переулки и вид с высоты 546 м.", acts:[
+  {n:"Сад Юйюань и старый город", zh:"豫园", c:"gold", q:"Yu Garden Shanghai old city", p:"≈ 40 ¥ / чел.", txt:"Классический сад, чайные домики, сяолунбао с бульоном внутри."},
+  {n:"Тяньцзыфан и улица Укан", zh:"田子坊 · 武康路", c:"pink", q:"Tianzifang Wukang Road Shanghai", p:"бесплатно", txt:"Узкие переулки с лавками и кафе, платаны, место для фото."},
+  {n:"Шанхайская башня", zh:"上海中心", c:"night", q:"Shanghai Tower observation deck view", p:"≈ 180 ¥ / чел.", txt:"Смотровая на 118 этаже, лучше идти к закату."}]},
+ {d:3, t:"Поезд в Пекин", s:"Утренний поезд G от Шанхай-Хунцяо до Пекин-Южного, 4,5–5,5 ч, до 350 км/ч. Вечером старый Пекин.", acts:[
+  {n:"Скоростной поезд G", zh:"京沪高铁", c:"snow", q:"Beijing Shanghai high speed train G interior", p:"≈ 550–700 ¥ / чел.", txt:"2-й класс, места 3+2: берите ряд из трёх кресел A-B-C."},
+  {n:"Цяньмэнь и утка по-пекински", zh:"前门 · 烤鸭", c:"night", q:"Qianmen street Beijing night Peking duck", p:"≈ 400 ¥ на троих", txt:"Старинная торговая улица и ужин уткой."}]},
+ {d:4, t:"Великая стена и баня с ночёвкой", s:"Утром стена, вечером большой банный центр, ночуете там.", acts:[
+  {n:"Великая стена, Мутяньюй", zh:"慕田峪长城", c:"snow", q:"Mutianyu Great Wall winter toboggan", p:"≈ 250 ¥ / чел. с канаткой", txt:"Вверх на канатке, вниз на тобоггане. Там −5…−10 °C, одеться тепло."},
+  {n:"Баня «Цзюхао»", zh:"九号温泉", c:"pink", q:"北京九号温泉", p:"≈ 380–400 ¥ / чел.", txt:"Горячие источники, сауны, буфет включён, капсулы и зоны для сна. Бронировать заранее."}]},
+ {d:5, t:"Запретный город и домой", s:"Если рейс вечером, утром Запретный город. Билеты за 7 дней на официальном сайте, по понедельникам закрыт. Потом прямой рейс в Астану ≈ 5 ч.", acts:[
+  {n:"Площадь Тяньаньмэнь", zh:"天安门广场", c:"gold", q:"Tiananmen Square Beijing", p:"бесплатно, по брони", txt:"Вход по паспорту через досмотр."},
+  {n:"Запретный город", zh:"故宫", c:"gold", q:"Forbidden City Beijing winter", p:"≈ 40 ¥ / чел. зимой", txt:"Дворец императоров. Если рейс утром, поменяйте местами с днём 3 и поезжайте на поезде пораньше."}]}
+];
+const B = [
+ {d:1, t:"Прилёт и Гранд-базар", s:"Прямой рейс 2,5 ч, заселение в центре. Берите в прокат лыжную одежду или проверьте свою.", acts:[
+  {n:"Гранд-базар Урумчи", zh:"国际大巴扎", c:"gold", q:"Urumqi Grand Bazaar night", p:"бесплатно", txt:"Сухофрукты, специи, платки. Вечером подсветка и шоу."},
+  {n:"Уйгурский ужин", zh:"新疆菜", c:"night", q:"Xinjiang food polo lamb skewers Urumqi", p:"≈ 150 ¥ на троих", txt:"Плов, лагман, самса из тандыра, шашлык."}]},
+ {d:2, t:"Лыжи, день 1: учимся", s:"Такси до курорта 40–60 мин. Если катаетесь впервые, возьмите инструктора на первые 2 часа.", acts:[
+  {n:"Silk Road Ski Resort", zh:"丝绸之路国际滑雪场", c:"snow", q:"Silk Road ski resort Urumqi slopes", p:"≈ 400 ¥ / чел. ски-пасс + прокат", txt:"Зелёные трассы и травлатор для новичков, гондола, кафе на вершине."},
+  {n:"Инструктор", zh:"滑雪教练", c:"green", q:"ski instructor beginner China resort", p:"≈ 700 ¥ / 2 ч на троих", txt:"Как стоять, тормозить «плугом», садиться на подъёмник."}]},
+ {d:3, t:"Лыжи, день 2", s:"Целый день на трассах. Кто устал, катается на тюбинге или сидит в кафе с видом.", acts:[
+  {n:"Трассы и гондола", zh:"丝绸之路缆车", c:"snow", q:"Silk Road ski resort gondola Tianshan view", p:"≈ 400 ¥ / чел.", txt:"Вид на хребет Тянь-Шань. Обед на курорте ≈ 60–80 ¥."},
+  {n:"Тюбинг", zh:"雪圈", c:"pink", q:"snow tubing ski resort China", p:"≈ 50–100 ¥", txt:"Ватрушки с горки, если хочется отдохнуть от лыж."}]},
+ {d:4, t:"Лыжи, день 3 и баня", s:"До обеда на склоне, вечером баня.", acts:[
+  {n:"Последний день на склоне", zh:"滑雪", c:"snow", q:"Urumqi skiing Xinjiang snow", p:"≈ 400 ¥ / чел.", txt:"Можно кататься до обеда и вернуться в город пораньше."},
+  {n:"Банный центр", zh:"洗浴中心", c:"pink", q:"Chinese bath center pajamas tea buffet", p:"≈ 150 ¥ / чел.", txt:"Как в сохранёнке: бассейны, пижамы, чай, буфет и массаж."}]},
+ {d:5, t:"Музей и домой", s:"Утром музей или холм Хуншань, затем рейс в Астану. Вместо третьего дня на лыжах можно съездить на замёрзшее озеро Тяньчи.", acts:[
+  {n:"Музей Синьцзяна", zh:"新疆博物馆", c:"gold", q:"Xinjiang Museum Urumqi mummies", p:"бесплатно", txt:"Мумии Таримской впадины и Шёлковый путь."},
+  {n:"Парк Хуншань", zh:"红山公园", c:"sunset", q:"Hongshan park Urumqi pagoda", p:"бесплатно", txt:"Пагода на красной скале и панорама города."}]}
+];
+
+function render(id, data){
+  const root=document.getElementById(id);
+  root.innerHTML=data.map(day=>`
+   <div class="day">
+     <div class="dnum"><span><small>день</small>${day.d}</span></div>
+     <div class="dbody">
+       <div class="dhead"><h3>${day.t}</h3><p>${day.s}</p></div>
+       <div class="acts">${day.acts.map(a=>`
+         <article class="act">
+           <a class="ph ${a.c}" data-w="${W[a.n]||""}" href="${img(a.q)}" target="_blank" rel="noopener" aria-label="Фото: ${a.n}">
+             <span class="zh" aria-hidden="true">${a.zh}</span><span class="tag">Смотреть фото ↗</span></a>
+           <div class="txt"><h3>${a.n}</h3><p>${a.txt}</p><div class="meta"><span>${a.zh}</span><span>${a.p}</span></div></div>
+         </article>`).join("")}</div>
+     </div>
+   </div>`).join("");
+}
+render("daysA",A); render("daysB",B); render("daysC",C); render("daysD",D);
+
+async function loadPhotos(){
+  const els=[...document.querySelectorAll('.ph[data-w]')].filter(e=>e.dataset.w);
+  const cache={};
+  for(const el of els){
+    const t=el.dataset.w;
+    try{
+      if(!(t in cache)){
+        const u="https://en.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrnamespace=0&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=800&gsrsearch="+encodeURIComponent(t);
+        cache[t]=fetch(u).then(r=>r.json()).then(d=>{const pg=d&&d.query&&Object.values(d.query.pages)[0];return pg&&pg.thumbnail?pg.thumbnail.source:null}).catch(()=>null);
+      }
+      const src=await cache[t];
+      if(src){el.style.backgroundImage='linear-gradient(to top,rgba(0,0,0,.45),rgba(0,0,0,0) 55%),url("'+src+'")';el.style.backgroundSize='cover';el.style.backgroundPosition='center';el.classList.add('has-photo')}
+    }catch(e){}
+  }
+}
+loadPhotos();
+</script>
+
+</html>
